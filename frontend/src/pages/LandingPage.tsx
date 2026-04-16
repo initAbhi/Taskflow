@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckSquare, ArrowRight, Zap, Target, Shield, Users } from 'lucide-react';
+import { CheckSquare, ArrowRight, Target, Shield, Users } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
     return (
@@ -30,12 +30,7 @@ const LandingPage: React.FC = () => {
             <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[70%] bg-primary-glow rounded-full blur-[120px] pointer-events-none opacity-50" />
 
             {/* Hero Section */}
-            <main className="relative z-10 pt-32 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-8 tracking-wide uppercase">
-                    <Zap size={14} className="animate-pulse" />
-                    Now Mobile Optimized
-                </div>
-
+            <main className="relative z-10 pt-44 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
                 <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.1] mb-6">
                     Master your workday with{' '}
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-indigo-400 to-info">
