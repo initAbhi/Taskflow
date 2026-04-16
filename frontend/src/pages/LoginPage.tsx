@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CheckSquare, Mail, Lock, AlertCircle } from 'lucide-react';
+import { CheckSquare, Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getErrorMessage } from '../hooks/useTasks';
 
@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [serverError, setServerError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         register,
@@ -81,14 +82,23 @@ const LoginPage: React.FC = () => {
                         <label className="text-[0.8125rem] font-medium text-text-secondary tracking-wide flex items-center gap-1" htmlFor="password">
                             <Lock size={13} /> Password
                         </label>
-                        <input
-                            id="password"
-                            type="password"
-                            autoComplete="current-password"
-                            placeholder="••••••••"
-                            className={`w-full h-11 px-4 bg-surface-2 border ${errors.password ? 'border-danger focus:ring-danger-light' : 'border-border focus:border-primary focus:ring-primary-light'} rounded-lg text-[0.9375rem] text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-[3px] transition-all`}
-                            {...register('password')}
-                        />
+                        <div className="relative">
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                autoComplete="current-password"
+                                placeholder="••••••••"
+                                className={`w-full h-11 px-4 pr-11 bg-surface-2 border ${errors.password ? 'border-danger focus:ring-danger-light' : 'border-border focus:border-primary focus:ring-primary-light'} rounded-lg text-[0.9375rem] text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-[3px] transition-all`}
+                                {...register('password')}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors focus:outline-none"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
                         {errors.password && (
                             <span className="text-[0.78125rem] text-danger flex items-center gap-1 mt-1">
                                 <AlertCircle size={12} /> {errors.password.message}

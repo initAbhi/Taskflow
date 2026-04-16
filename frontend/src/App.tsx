@@ -7,6 +7,7 @@ import { ProtectedRoute, PublicRoute } from './components/layout/ProtectedRoute'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
+import LandingPage from './pages/LandingPage';
 
 const queryClient = new QueryClient();
 
@@ -16,8 +17,9 @@ export const App: React.FC = () => {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public Routes (Login/Register) */}
+            {/* Public Routes (Login/Register/Landing) */}
             <Route element={<PublicRoute />}>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
             </Route>
