@@ -3,7 +3,7 @@ import { TaskStatus } from '../entities/Task';
 
 export const createTaskSchema = z.object({
     title: z
-        .string({ required_error: 'Title is required' })
+        .string()
         .min(1, 'Title is required')
         .max(255, 'Title must not exceed 255 characters')
         .trim(),

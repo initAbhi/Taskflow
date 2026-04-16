@@ -23,7 +23,7 @@ export const getTask = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const task = await taskService.getTaskById(req.params.id, req.user!.id);
+        const task = await taskService.getTaskById(req.params.id as string, req.user!.id);
         res.status(200).json({ success: true, data: { task } });
     } catch (error) {
         next(error);
@@ -55,7 +55,7 @@ export const updateTask = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const task = await taskService.updateTask(req.params.id, req.body, req.user!.id);
+        const task = await taskService.updateTask(req.params.id as string, req.body, req.user!.id);
         const populated = await taskService.getTaskById(task.id, req.user!.id);
         res.status(200).json({
             success: true,
@@ -73,7 +73,7 @@ export const deleteTask = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        await taskService.deleteTask(req.params.id, req.user!.id);
+        await taskService.deleteTask(req.params.id as string, req.user!.id);
         res.status(200).json({ success: true, message: 'Task deleted successfully' });
     } catch (error) {
         next(error);

@@ -9,7 +9,7 @@ export const validate =
                 res.status(400).json({
                     success: false,
                     message: 'Validation error',
-                    errors: result.error.errors.map((err) => ({
+                    errors: (result.error as any).errors.map((err: any) => ({
                         field: err.path.join('.'),
                         message: err.message,
                     })),
