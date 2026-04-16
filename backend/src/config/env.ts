@@ -20,6 +20,8 @@ export const env = {
     DB_USERNAME: process.env.DB_USERNAME || 'postgres',
     DB_PASSWORD: process.env.DB_PASSWORD || '12345',
     DB_NAME: process.env.DB_NAME || 'taskmanager',
+    DB_SSL: process.env.DB_SSL === 'true',
+    DB_SYNC: process.env.DB_SYNC === 'true',
 
     JWT_SECRET: requireEnv('JWT_SECRET'),
     JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',

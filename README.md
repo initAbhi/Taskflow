@@ -75,6 +75,82 @@ You can then start the frontend via `npm run dev` in the frontend folder.
 
 ---
 
+## 🌍 VM Production Deployment (NGINX + Neon DB)
+
+This application is ready to be deployed on a standard Ubuntu VM using Nginx as a reverse proxy, PM2 for the backend daemon, and Neon for cloud PostgreSQL.
+
+### 1. Configure the Backend with Neon DB
+Connect to your VM, pull the code, and set up your `.env` file in the `/backend` folder with your Neon credentials:
+```env
+# backend/.env
+NODE_ENV=production
+PORT=5000
+
+# Required for Neon DB remote connection
+DB_HOST=ep-red-glitter-amtrdcb5.c-5.us-east-1.aws.neon.tech
+DB_PORT=5432
+DB_USERNAME=neondb_owner
+DB_PASSWORD=************
+DB_NAME=neondb
+DB_SSL=true
+
+# Set this to true ONLY for the first run to instantiate tables, then set to false
+DB_SYNC=true
+
+# Security
+JWT_SECRET=super_secure_random_string_here
+CORS_ORIGIN=https://taskflow.fourth-coffee.shop
+```
+
+### 2. Build and Start Backend (PM2)
+```bash
+sudo npm install -g pm2
+cd backend
+npm install
+npm run build
+pm2 start dist/server.js --name "taskflow-api"
+```
+
+### 3. Build Frontend
+```bash
+cd frontend
+# Set standard explicit production vars for Vite in frontend/.env
+echo "VITE_API_URL=https://api-taskflow.fourth-coffee.shop/api" > .env
+npm install
+npm run build
+```
+
+### 4. Setup Nginx Reverse Proxy
+An `nginx.conf` file is provided in the root directory. Copy it to your Nginx setup:
+```bash
+# Move your frontend dist folder to the web root
+sudo mkdir -p /var/www/taskflow/frontend
+sudo cp -r dist/* /var/www/taskflow/frontend/
+
+# Copy the provided nginx configuration
+sudo cp ../nginx.conf /etc/nginx/sites-available/taskflow
+sudo ln -s /etc/nginx/sites-available/taskflow /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default
+
+# Restart Nginx
+sudo systemctl restart nginx
+```
+
+### 5. Secure with SSL (Certbot)
+Since you are using real domains (`taskflow.fourth-coffee.shop` & `api-taskflow.fourth-coffee.shop`), you can use Certbot to automatically configure Let's Encrypt SSL.
+```bash
+# Install Certbot for Nginx
+sudo apt update
+sudo apt install python3-certbot-nginx -y
+
+# Provision SSL Certificates
+sudo certbot --nginx -d taskflow.fourth-coffee.shop -d api-taskflow.fourth-coffee.shop
+
+# Certbot will automatically override your nginx.conf to redirect HTTP to HTTPS!
+```
+
+---
+
 ## 🔑 Sample User Credentials
 Since this is a fresh database, please create at least two users using the web interface:
 

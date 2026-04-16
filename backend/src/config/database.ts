@@ -10,10 +10,10 @@ export const AppDataSource = new DataSource({
     username: env.DB_USERNAME,
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
-    synchronize: env.NODE_ENV === 'development', // Auto-sync in dev; use migrations in prod
+    synchronize: env.NODE_ENV === 'development' || env.DB_SYNC, // Useful for initial VM syncs without migrations
     logging: env.NODE_ENV === 'development',
     entities: [User, Task],
     migrations: ['dist/migrations/*.js'],
     subscribers: [],
-    ssl: env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: env.DB_SSL ? { rejectUnauthorized: false } : (env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false),
 });
